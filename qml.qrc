@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>Page1Vasya.qml</file>
+        <file>Page2Vasya.qml</file>
+        <file>Page3Vasya.qml</file>
+        <file>logo.jpg</file>
+        <file>sample.avi</file>
+        <file>play.svg</file>
+        <file>pause.svg</file>
+        <file>play1-128x128.png</file>
+        <file>pause-128x128.png</file>
+        <file>pinterest_logo.png</file>
+        <file>speaker.svg</file>
+        <file>back.svg</file>
+        <file>forward.svg</file>
+        <file>menu_icon.svg</file>
+        <file>stop-button.svg</file>
+        <file>lens.svg</file>
+        <file>camera.svg</file>
+        <file>cam.png</file>
+        <file>v_cam.png</file>
+    </qresource>
+</RCC>
