@@ -9,6 +9,38 @@ import QtQuick.Controls.Universal 2.12
 import QtGraphicalEffects 1.12
 import QtWebView 1.1
 
+
+//2.открыть файл для чтения незашифр исходных данных и 2 файл для записи зашифрованных данных
+//EVP_EncryptUpdate() написать пункт
+//3.2 направляется в EVP_EncryptUpdate()
+//3.3 полученный шифрованный блок записывается во 2 файл
+//3.4 цикл выполняется до тех пор пока не будет выполнен проход по всему файлу
+//4. в шаблонную ф-цию добавить закрытие обоих файлов
+// qstring в unsigned char
+//нужны header файлы добавлять в pro файл include PATH
+//нужно подключить статические библиботеки
+//кроме include подключить библиотеки ssl.lib cryptolib
+// 1 тип библиотек header-only код содержится на уровне исходников подключается в приложении с помощью include
+// достоинства:просто подключается, кроссплатформенность
+//недостатки:только маленьике библиотеки можно таким способом подключать тк они компилируются каждый раз
+//при пересборке приложения и слишком объемные библиотеки будут затягивать время пересборки
+// механизм предварительно откомпелироанных заголовков precompiledheaders позволяет частично эту проблему и не перестраивать библиотеки каждый раз
+// мстатическое связывание библиотек решает проблему избыточной многократной пересборке исходного кода
+//библиотека компилируетс в lib файл в случае линукс у файла расширение .a в нем хранится машинный код скомпелированных ф-ций
+//если библиотека подключена в приложении то исп ф-ци копируются из lib файла в приложение
+//плюсы: ускорение сборки отсутствие избыточных пересборок библиотек недостатки: код из lib файлов включается в файлы приложения что увеличивает его объем
+//отсустствие кроссплатформенности нам кажд платформу должен быть скомпилирован свой библиотечный файл
+//для подключения необходимы 2 вещи: 1) подключить заголовки для компилятора 2) для сборщика дать команду по подключению файлов бибилиотек с  указанием их расположения
+//3) динамическое связывние код библиотеч ф-ций компилируется в dll файл, .so (linux)
+//в файлах .lib остается только таблица адресов для поиска нужных ф-ций в dll кода в lib не остается
+//для динамического явного связывание 1) подключить заголовки для компилятора 2) сборщику дать команду задейтвовать lib файл кот соответствует данной библиотеке
+//3)dll файл содержащий машинный код ф-ций разместить либо в каталоге приложения либо в одном из каталогов path либо добавить в path нужный каталог с dll
+// при загрзке приложения ОС, ОС анализирует заголовок файла приложения и загружает вместе с ним отмеченнные ам dll библиотеки
+//Если в описанных путях dll файл не найден
+//динамич динамич связывание отличие: lib файлы не нужны и они не подключаются на этапе сборки dll грузится с помощью команд приложения в произвольный момент времени
+//часто используемое динамич явное
+//плюсы и минусы динамического связывания!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 Page {
     id: page2Vasya
 
@@ -18,30 +50,45 @@ Page {
         background: Rectangle { //создание фона
             id:rec3//заполнение панели цветом
             //height: 50
-            color: "#dc143c" //цвет
+            color: "#d3d3d3" //цвет
         }
         GridLayout{
+
             id:layout3
             anchors.fill:parent //по ширине родителя
             columns:4
             rows: 1
+
             ToolButton { //создание кнопки с иконкой
                 id:buttontwit
-                width: 5
-                height: 5
+                //width: 5
+                //height: 5
                 Layout.row:0
                 Layout.column:0
                 anchors.left:parent.left //привязка слева от родителя
                 icon.name: "pinterest" //название иконки
-                icon.source: "qrc:/pinterest_logo.png" //источник
+                //icon.source: "qrc:/play.svg" //источник
 
             }
+
             Label { //Создание метки с текстом
                 id:label3 //задание id
-                text: qsTr("Лабораторная работа №2") //текст
-                //color:"#1E90FF" //цвет
+                //text: qsTr("Лабораторная работа №2") //текст
+                text: "Лабораторная работа №2"
+                color:"#dc143c" //цвет
+                font.family: "Franklin Gothic Medium"
                 Layout.row:0
                 Layout.column:1
+                font.weight: Font.Medium
+                font.pointSize: 11
+                Image {
+                    id: logo
+                    source: "qrc:/images/pinterest_svg.svg"
+                    width: 32
+                    height: 32
+                    anchors.rightMargin: 75
+                    anchors.right: parent.left
+                }
             }
 
 
@@ -51,6 +98,12 @@ Page {
     ColumnLayout {
         anchors.fill:parent
         spacing: 6
+        Rectangle
+           {
+               id: background
+               anchors.fill: parent
+               color: "#f5f5f5"
+           }
 
         Row{ //расположение кнопок на одном ряду
             id:row2
@@ -62,11 +115,13 @@ Page {
                 checked: true
                 text: qsTr("Видео")
                 Material.accent: Material.Red
+                font.family: "Franklin Gothic Medium"
             }
             RadioButton {//создание кнопки камера
                 id: camera
                 text: qsTr("Камера")
                 Material.accent: Material.Red
+                font.family: "Franklin Gothic Medium"
             }
         }
         RowLayout{
@@ -87,7 +142,7 @@ Page {
 
                             Image {
                                 id:music
-                                source: "qrc:/speaker.svg"
+                                source: "qrc:/images/speaker.svg"
                                 height: 35
                                 width: 35
                                 anchors.right:slid_volum.left //расположение икноки слева от слайдера громкости
@@ -122,7 +177,6 @@ Page {
 
 
 
-
                         Button{
                             Layout.column: 2
                             Layout.row: 3
@@ -135,14 +189,20 @@ Page {
 
                             FileDialog {
                                 id: fileDialog
-
                                 folder : videoUrl
-                                title: qsTr("Open file")
+                                title: "Open file"
+                                //title: qsTr("Open file")
                                 nameFilters: [ "Music files (*.mp4 *.avi *.mkv *.mov)"]
+                            }
+                            ColorOverlay { //цвет для картинки music
+                                anchors.fill: openButton // на всю картинку
+                                source: openButton//источник
+                                color: "#d3d3d3"  // make image like it lays under red glass
                             }
 
 
                         }
+
 
                         RoundButton{ //создание кнопки back
                             id:back
@@ -151,7 +211,7 @@ Page {
                                 id:backi
                                 height: 40
                                 width: 40
-                                source: "qrc:/back.svg"
+                                source: "qrc:/images/back.svg"
                             }
                             ColorOverlay { //цвет для картинки
                                 anchors.fill: backi// на всю картинку
@@ -169,7 +229,7 @@ Page {
                                 height: 40
                                 width: 40
                                 id: stopi
-                                source: "qrc:/stop-button.svg"
+                                source: "qrc:/images/stop-button.svg"
                             }
                             ColorOverlay { //цвет для картинки
                                 anchors.fill: stopi
@@ -189,9 +249,9 @@ Page {
                                 id: play_pausei
                                 source: {
                                     if (nature_video.playbackState == MediaPlayer.PlayingState) //проверка свойства видео.PlaybackState свойство MediaPlayer. Это свойство содержит состояние воспроизведения мультимедиа и если оно PlayingState - медиафайл в данный момент воспроизводится.
-                                        return "qrc:/pause.svg"
+                                        return "qrc:/images/pause.svg"
                                     else
-                                        return "qrc:/play.svg"
+                                        return "qrc:/images/play.svg"
                                 }
 
                             }
@@ -219,7 +279,7 @@ Page {
                                 height: 40
                                 width: 40
                                 id: nexti
-                                source: "qrc:/forward.svg"
+                                source: "qrc:/images/forward.svg"
                             }
                             ColorOverlay {
                                 anchors.fill: nexti // на вcю картинку
@@ -240,7 +300,7 @@ Page {
 
                         MediaPlayer{
                             id: nature_video
-                            source: if (fileDialog.fileUrl == 0) "qrc:/sample.avi"; else fileDialog.fileUrl
+                            source: if (fileDialog.fileUrl == 0) "qrc:/images/sample.avi"; else fileDialog.fileUrl
                             volume: slid_volum.value //громкость видео настраивается на slid_volum
                         }
 
@@ -284,12 +344,18 @@ Page {
 
 
                     }
+
                     MouseArea{
                         id:rowvis
                         anchors.fill: outv
-                        onClicked:
-                            play_pause.visible = true, back.visible = true,next.visible = true,openButton.visible = true,stop.visible = true, timerforguivideo.start()
-
+                        onClicked:{
+                            play_pause.visible = true;
+                            back.visible = true;
+                            next.visible = true;
+                            openButton.visible = true;
+                            stop.visible = true;
+                            timerforguivideo.start();
+                        }
                         onPressed: {
                             if (nature_video.playbackState == MediaPlayer.PlayingState) //проверка свойства видео.PlaybackState свойство MediaPlayer. Это свойство содержит состояние воспроизведения мультимедиа и если оно PlayingState - медиафайл в данный момент воспроизводится.
                                 return nature_video.pause();
@@ -311,7 +377,7 @@ Page {
                     }
                     Timer {
                         id: timerforguivideo
-                        interval: 5000; running: true; repeat: true
+                        //interval: 5000; running: true; repeat: true
                         onTriggered: next.visible = false, back.visible = false, stop.visible = false, play_pause.visible = false,openButton.visible = false
                     }
                     }
@@ -375,11 +441,11 @@ Page {
                                     Image {
                                         source: {
                                             if (camera1.videoRecorder.recorderState === CameraRecorder.StoppedState) //StoppedState-камера не записывает видео.
-                                                return "qrc:/cam.png"
+                                                return "qrc:/images/cam.png"
                                             else if (camera1.videoRecorder.recorderStatus === CameraRecorder.RecordingStatus)//RecordingState-Камера записывает видео.
-                                                return "qrc:/pause.svg"
+                                                return "qrc:/images/pause.svg"
                                             else if (camera1.videoRecorder.recorderStatus === CameraRecorder.PausedStatus) //PausedStatus-Запись приостановлена.
-                                                return "qrc:/play.svg"
+                                                return "qrc:/images/play.svg"
                                         }
                                     }
                                     flat: true
@@ -400,9 +466,9 @@ Page {
                                     Image {
                                         source: {
                                             if (camera1.videoRecorder.recorderStatus === CameraRecorder.RecordingStatus) //RecordingState-Камера записывает видео.
-                                                return "qrc:/stop-button.svg"
+                                                return "qrc:/images/stop-button.svg"
                                             else
-                                                return "qrc:/v_cam.png"
+                                                return "qrc:/images/v_cam.png"
                                         }
                                     }
                                     flat: true

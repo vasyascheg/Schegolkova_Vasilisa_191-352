@@ -18,7 +18,7 @@ Page {
 
         Image {
             id: logo
-            source: "qrc:/logo.jpg"
+            source: "qrc:/images/logo.jpg"
             width: 100
             height: 100
         }

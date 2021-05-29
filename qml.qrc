@@ -5,21 +5,31 @@
         <file>Page1Vasya.qml</file>
         <file>Page2Vasya.qml</file>
         <file>Page3Vasya.qml</file>
-        <file>logo.jpg</file>
-        <file>sample.avi</file>
-        <file>play.svg</file>
-        <file>pause.svg</file>
-        <file>play1-128x128.png</file>
-        <file>pause-128x128.png</file>
-        <file>pinterest_logo.png</file>
-        <file>speaker.svg</file>
-        <file>back.svg</file>
-        <file>forward.svg</file>
-        <file>menu_icon.svg</file>
-        <file>stop-button.svg</file>
-        <file>lens.svg</file>
-        <file>camera.svg</file>
-        <file>cam.png</file>
-        <file>v_cam.png</file>
+        <file>httpcontroller.h</file>
+        <file>httpcontroller.cpp</file>
+        <file>images/search.png</file>
+        <file>images/weather.jpg</file>
+        <file>images/weather2.jpg</file>
+        <file>images/m_pinterest_logo.png</file>
+        <file>images/m_pinterest_logo_2.png</file>
+        <file>images/weather3.jpg</file>
+        <file>images/pinterest_svg.svg</file>
+        <file>images/logo.jpg</file>
+        <file>images/speaker.svg</file>
+        <file>images/back.svg</file>
+        <file>images/forward.svg</file>
+        <file>images/pause.svg</file>
+        <file>images/play.svg</file>
+        <file>images/sample.avi</file>
+        <file>images/cam.png</file>
+        <file>images/stop-button.svg</file>
+        <file>images/v_cam.png</file>
+        <file>Page4Vasya.qml</file>
+        <file>images/vk-1.svg</file>
+        <file>images/vk_logo.png</file>
+        <file>images/vk_logo_2.png</file>
+        <file>Page5Vasya.qml</file>
+        <file>Page6Vasya.qml</file>
+        <file>images/file.svg</file>
     </qresource>
 </RCC>
